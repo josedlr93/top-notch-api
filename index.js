@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import contactRoutes from './src/routes/contactRoutes.js';
-import truckRoutes from './src/routes/truckRoutes';
+import truckRoutes from './src/routes/truckRoutes.js';
 import employeeRoutes from './src/routes/employeeRoutes';
 import DB_URI from './databaseConfig';
 

@@ -4,7 +4,7 @@ import {
   getContactWithID,
   updateContact,
   deleteContact
-} from '../controllers/contactController';
+} from '../controllers/contactController.js';
 
 export const contactRoutes = (app) => {
   app.route('/contact')

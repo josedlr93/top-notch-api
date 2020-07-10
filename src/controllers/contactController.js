@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { ContactSchema } from '../models/contactModel';
-import { handleDuplicateKey } from '../errorHandler';
+import { ContactSchema } from '../models/contactModel.js';
+import { handleDuplicateKey } from '../errorHandler.js';
 
 const Contact = mongoose.model('Contact', ContactSchema);
 

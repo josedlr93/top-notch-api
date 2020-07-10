@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { EmployeeSchema } from '../models/employeeModel';
-import { handleDuplicateKey } from '../errorHandler';
+import { EmployeeSchema } from '../models/employeeModel.js';
+import { handleDuplicateKey } from '../errorHandler.js';
 
 const Employee = mongoose.model('Employee', EmployeeSchema);
 

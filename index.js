@@ -1,10 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import contactRoutes from './src/routes/contactRoutes';
-import truckRoutes from './src/routes/truckRoutes';
-import employeeRoutes from './src/routes/employeeRoutes';
-import DB_URI from './databaseConfig';
+import contactRoutes from './src/routes/contactRoutes.js';
+import truckRoutes from './src/routes/truckRoutes.js';
+import employeeRoutes from './src/routes/employeeRoutes.js';
+import DB_URI from './databaseConfig.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;

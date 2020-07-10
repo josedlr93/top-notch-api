@@ -4,9 +4,9 @@ import {
   getTruckWithID,
   updateTruck,
   deleteTruck
-} from '../controllers/truckController';
+} from '../controllers/truckController.js';
 
-const truckRoutes = (app) => {
+ export const truckRoutes = (app) => {
   app.route('/truck')
     .get(getTrucks)
 
@@ -20,4 +20,3 @@ const truckRoutes = (app) => {
     .delete(deleteTruck);
 };
 
-export default truckRoutes;

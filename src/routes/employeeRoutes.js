@@ -4,9 +4,9 @@ import {
   getEmployeeWithID,
   updateEmployee,
   deleteEmployee
-} from '../controllers/employeeController';
+} from '../controllers/employeeController.js';
 
-const employeeRoutes = (app) => {
+export const employeeRoutes = (app) => {
   app.route('/employee')
     .get(getEmployees)
 
@@ -19,5 +19,3 @@ const employeeRoutes = (app) => {
 
     .delete(deleteEmployee);
 };
-
-export default employeeRoutes;

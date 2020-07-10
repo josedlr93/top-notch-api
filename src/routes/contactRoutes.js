@@ -6,7 +6,7 @@ import {
   deleteContact
 } from '../controllers/contactController.js';
 
-export const contactRoutes = (app) => {
+const contactRoutes = (app) => {
   app.route('/contact')
     .get(getContacts)
 
@@ -19,3 +19,5 @@ export const contactRoutes = (app) => {
 
     .delete(deleteContact);
 };
+
+export default contactRoutes;

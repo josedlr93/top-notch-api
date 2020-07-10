@@ -6,7 +6,7 @@ import {
   deleteEmployee
 } from '../controllers/employeeController.js';
 
-export const employeeRoutes = (app) => {
+const employeeRoutes = (app) => {
   app.route('/employee')
     .get(getEmployees)
 
@@ -19,3 +19,5 @@ export const employeeRoutes = (app) => {
 
     .delete(deleteEmployee);
 };
+
+export default employeeRoutes;

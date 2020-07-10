@@ -6,7 +6,7 @@ import {
   deleteTruck
 } from '../controllers/truckController.js';
 
- export const truckRoutes = (app) => {
+ const truckRoutes = (app) => {
   app.route('/truck')
     .get(getTrucks)
 
@@ -20,3 +20,4 @@ import {
     .delete(deleteTruck);
 };
 
+export default truckRoutes;

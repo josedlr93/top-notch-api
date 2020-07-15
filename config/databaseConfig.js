@@ -1,6 +1,12 @@
-// set environment variables from .env file in development
+import dotenv from 'dotenv';
+
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
+  const result = dotenv.config();
+  
+  if(result.error) {
+    throw result.error;
+  }
+  console.log(result.parsed);
 }
 
 const DB_NAME = process.env.DB_NAME;

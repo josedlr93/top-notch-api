@@ -1,6 +1,12 @@
 # Linter
 *.jshintrc
 
+# Jest
+jest.config.js
+
+# Babel
+babel.config.json
+
 # Logs
 logs
 *.log

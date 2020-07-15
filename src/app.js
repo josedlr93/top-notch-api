@@ -30,7 +30,7 @@ employeeRoutes(app);
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-  res.status(200).send(`Node and express server running on ${PORT}`);
+  res.status(200).send(`Node and express server running`);
 });
 
 export default app;

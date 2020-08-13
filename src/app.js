@@ -1,9 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+
 import contactRoutes from './routes/contactRoutes.js';
 import truckRoutes from './routes/truckRoutes.js';
 import employeeRoutes from './routes/employeeRoutes.js';
+import jobRoutes from './routes/jobRoutes.js';
 import DB_URI from '../config/databaseConfig.js';
 
 const app = express();
@@ -25,6 +27,7 @@ app.use(bodyParser.json());
 contactRoutes(app);
 truckRoutes(app);
 employeeRoutes(app);
+jobRoutes(app);
 
 // serving static files
 app.use(express.static('public'));

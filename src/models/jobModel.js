@@ -9,14 +9,13 @@ export const JobSchema = new Schema({
   },
   date: {
     type: Date,
-    required: 'Date required'
+    required: 'Date required',
+    expires: '90 days'
   },
-  trucks: {
-    type: Array,
-    required: 'trucks required'
+  assigned_trucks: {
+    type: [Object],
   },
-  employees: {
-    type: Array,
-    required: 'employees required'
+  assigned_employees: {
+    type: [Object],
   },
 });

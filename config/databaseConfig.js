@@ -6,7 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
   if(result.error) {
     throw result.error;
   }
-  console.log(result.parsed);
+  console.log('databaseConfig.js:', result.parsed);
 }
 
 const DB_NAME = process.env.DB_NAME;

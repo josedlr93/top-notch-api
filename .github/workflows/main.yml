@@ -25,9 +25,9 @@ jobs:
       - shell: bash
         env:
           NODE_ENV: 'testing'
-          DB_NAME: ${{ DB_NAME }}
-          DB_USER: ${{ DB_USER }}
-          DB_PASS: ${{ DB_PASS }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
         run: echo ${{ NODE_ENV }}
       
       - name: Install Dependencies

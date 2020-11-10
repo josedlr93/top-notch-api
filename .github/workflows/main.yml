@@ -28,7 +28,7 @@ jobs:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
-        run: echo '${{ NODE_ENV }}'
+        run: echo 'setting env vars'
       
       - name: Install Dependencies
         run: npm install

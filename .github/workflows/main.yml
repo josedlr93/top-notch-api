@@ -7,6 +7,9 @@ name: CI
 on:
   push:
     branches: [ dev ]
+  
+  pull_request:
+    branches: [ staging, master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -21,6 +24,17 @@ jobs:
         
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.2
+      
+      - shell: bash
+        env:
+          NODE_ENV: 'development'
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+        run: echo 'Set Environment Variables'
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.3.0
       
       - name: Install Dependencies
         run: npm install

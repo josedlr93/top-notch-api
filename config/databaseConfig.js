@@ -17,12 +17,14 @@ const DB_PASS = process.env.DB_PASS;
 
 let DB_URI = '';
 
-if (process.env.NODE_ENV === 'production') {
-  DB_URI = `mongodb+srv://${DB_USER}:${DB_PASS}@cluster0-ascvt.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`;
-} else if(process.env.NODE_ENV === 'development') {
-  DB_URI = `mongodb://localhost:27017/test`;
-} else {
-  throw new Error('NODE_ENV environment variable not set');
+switch(process.env.NODE_ENV) {
+  case 'production':
+    DB_URI = `mongodb+srv://${DB_USER}:${DB_PASS}@cluster0-ascvt.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`;
+    break;
+  default:
+    DB_URI = `mongodb://localhost:27017/test`;
 }
+
+console.log(`Using DB_URI from environment: ${process.env.NODE_ENV}`);
 
 export default DB_URI;

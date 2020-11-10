@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon ./server.js",
-    "test": "jest --coverage --watchAll"
+    "test": "jest --coverage"
   },
   "author": "Jose De La Rosa",
   "license": "ISC",

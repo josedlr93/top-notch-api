@@ -24,11 +24,10 @@ jobs:
       
       - shell: bash
         env:
-          NODE_ENV: 'testing'
+          NODE_ENV: 'development'
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
-          NODE_ENV: ${{ secrets.NODE_ENV }}
         run: echo 'Set Environment Variables'
 
       - name: Start MongoDB

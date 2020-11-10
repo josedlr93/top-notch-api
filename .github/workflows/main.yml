@@ -29,6 +29,9 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
         run: echo 'Set Environment Variables'
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.3.0
       
       - name: Install Dependencies
         run: npm install

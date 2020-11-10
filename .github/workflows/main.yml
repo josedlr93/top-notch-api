@@ -28,8 +28,7 @@ jobs:
           DB_NAME: ${{ DB_NAME }}
           DB_USER: ${{ DB_USER }}
           DB_PASS: ${{ DB_PASS }}
-        run: |
-      example-command "$SUPER_SECRET"
+        run: echo ${{ NODE_ENV }}
       
       - name: Install Dependencies
         run: npm install

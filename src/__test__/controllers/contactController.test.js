@@ -1,7 +1,19 @@
 import * as contactService from '../../services/contactService';
 
-describe('Contact service test', () => {
-  it('tests the contact service', () => {
-    expect(contactService.test()).toEqual(false);
+describe('contactService test', () => {
+  it('has a module', () => {
+    expect(contactService).toBeDefined();
   });
+
+  describe('getContacts test', () => {
+    it('gets contacts', () => {
+      const MockModel = {
+        find: jest.fn()
+      };
+      contactService.getContacts(MockModel);
+      expect(MockModel.find).toHaveBeenCalledTimes(1);
+    });
+  });
+  
 });
+

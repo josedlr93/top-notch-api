@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 import { ContactSchema } from '../models/contactModel.js';
 import { handleDuplicateKey } from '../errorHandler.js';
 import * as contactService from '../services/contactService.js';
@@ -58,7 +59,6 @@ export const deleteContact = (req, res) => {
     if (err) {
       res.send(err);
     }
-    console.log(contact);
     res.json({ 
       contact,
       message: contact ? 'Successfully deleted contact' : `No contact with ID: ${req.params.contactID}` });

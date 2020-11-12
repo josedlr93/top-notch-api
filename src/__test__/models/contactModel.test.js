@@ -12,8 +12,9 @@ mongoose.connect(DB_URI, {
   useCreateIndex: true,
   useUnifiedTopology: true
 })
-  .then(console.log('DB - Connected'))
   .catch(console.error);
+
+mongoose.connection.on('open', () => console.log('DB - connected'));
 
 describe('Contact model test', () => {  
   const contactInfo = {

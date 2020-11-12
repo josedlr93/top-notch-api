@@ -5,25 +5,23 @@ import * as contactService from '../services/contactService.js';
 
 const Contact = mongoose.model('Contact', ContactSchema);
 
-export const addNewContact = (req, res) => {
-  let newContact = new Contact(req.body);
-
-  newContact.save((err, contact) => {
-    if (err) {
+export const addNewContact = async (req, res) => {
+  try {
+    const contact = await contactService.addNewContact(Contact, req.body);
+    res.json(contact);
+  } catch(err) {
       // MongoError: Duplicate key error
       if (err.code === 11000){
         handleDuplicateKey(res, err);
       } else {
         res.send(err);
       }
-    }
-    res.json(contact);
-  });
+  }
 };
 
-export const getContacts = (req, res) => {
+export const getContacts = async (req, res) => {
   try {
-    const contacts = contactService.getContacts(Contact);
+    const contacts = await contactService.getContacts(Contact);
     res.json(contacts);
   } catch(err) {
     res.send(err);

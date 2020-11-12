@@ -9,8 +9,9 @@ mongoose.connect(DB_URI, {
   useCreateIndex: true,
   useUnifiedTopology: true
 })
-  .then(console.log('DB - Connected'))
   .catch(console.error);
+
+mongoose.connection.on('open', () => console.log('DB - connected'));
 
 const PORT = process.env.PORT || 4000;
 

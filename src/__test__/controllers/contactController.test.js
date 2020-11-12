@@ -14,6 +14,33 @@ describe('contactService test', () => {
       expect(MockModel.find).toHaveBeenCalledTimes(1);
     });
   });
-  
+
+  describe('addNewContact test', () => {
+    it('adds a contact', () => {
+      const save = jest.fn();
+      let first_name;
+      let last_name;
+      const MockModel = (data) => {
+        first_name = data.first_name;
+        last_name = data.last_name;
+
+        return {
+          ...data,
+          save
+        };
+      };
+
+      contactService.addNewContact(MockModel, {
+        first_name: 'John',
+        last_name: 'Doe'
+      });
+
+      expect(save).toHaveBeenCalledTimes(1);
+      expect(first_name).toEqual('John');
+      expect(last_name).toEqual('Doe');
+      
+    });
+  });
+
 });
 

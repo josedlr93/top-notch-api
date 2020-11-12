@@ -1,10 +1,8 @@
-import { handleDuplicateKey } from '../errorHandler.js';
-
 export const getContacts = (Contact) => {
-  console.log('contactService - getContacts');
   return Contact.find({});
 };
 
-export const addNewContact = () => {
-
+export const addNewContact = (Contact, data) => {
+  let newContact = new Contact(data);
+  return newContact.save();
 };

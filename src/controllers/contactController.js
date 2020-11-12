@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { ContactSchema } from '../models/contactModel.js';
 import { handleDuplicateKey } from '../errorHandler.js';
+import * as contactService from '../services/contactService.js';
 
 const Contact = mongoose.model('Contact', ContactSchema);
 
@@ -21,12 +22,12 @@ export const addNewContact = (req, res) => {
 };
 
 export const getContacts = (req, res) => {
-  Contact.find({}, (err, contact) => {
-    if (err) {
-      res.send(err);
-    }
-    res.json(contact);
-  });
+  try {
+    const contacts = contactService.getContacts(Contact);
+    res.json(contacts);
+  } catch(err) {
+    res.send(err);
+  }
 };
 
 export const getContactWithID = (req, res) => {

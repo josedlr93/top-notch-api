@@ -10,6 +10,7 @@ describe('contactServices test', () => {
       const MockModel = {
         find: jest.fn()
       };
+
       contactService.getContacts(MockModel);
       expect(MockModel.find).toHaveBeenCalledTimes(1);
     });
@@ -38,9 +39,41 @@ describe('contactServices test', () => {
       expect(save).toHaveBeenCalledTimes(1);
       expect(first_name).toEqual('John');
       expect(last_name).toEqual('Doe');
-      
     });
   });
+
+  describe('getContactWithID test', () => {
+    it('gets a contact', () => {
+      const MockModel = {
+        findById: jest.fn()
+      };
+
+      contactService.getContactWithID(MockModel);
+      expect(MockModel.findById).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('updateContact test', () => {
+    it('updates a contact', () => {
+      const MockModel = {
+        findOneAndUpdate: jest.fn()
+      };
+
+      contactService.updateContact(MockModel);
+      expect(MockModel.findOneAndUpdate).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('deleteContact test', () => {
+    it('deletes a contact', () => {
+      const MockModel = {
+        findByIdAndDelete: jest.fn()
+      };
+
+      contactService.deleteContact(MockModel);
+      expect(MockModel.findByIdAndDelete).toHaveBeenCalledTimes(1);
+    });
+  })
 
 });
 

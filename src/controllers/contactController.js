@@ -29,38 +29,32 @@ export const getContacts = async (req, res) => {
   }
 };
 
-export const getContactWithID = (req, res) => {
-  Contact.findById(req.params.contactID, (err, contact) => {
-    if (err) {
-      res.send(err);
-    }
+export const getContactWithID = async (req, res) => {
+  try {
+    const contact = await contactService.getContactWithID(Contact, req.params.contactID);
     res.json(contact);
-  });
+  } catch(err) {
+    res.send(err);
+  }
 };
 
-export const updateContact = (req, res) => {
-  Contact.findOneAndUpdate(
-    { _id: req.params.contactID },
-    req.body,
-    {
-      new: true,
-      useFindAndModify: false
-    },
-    (err, contact) => {
-      if (err) {
-        res.send(err);
-      }
+export const updateContact = async (req, res) => {
+    try {
+      const contact = await contactService.updateContact(Contact, req.params.contactID, req.body);
       res.json(contact);
-    });
-};
-
-export const deleteContact = (req, res) => {
-  Contact.findByIdAndDelete({ _id: req.params.contactID }, (err, contact) => {
-    if (err) {
+    } catch(err) {
       res.send(err);
     }
-    res.json({ 
+};
+
+export const deleteContact = async (req, res) => {  
+  try {
+    const contact = await contactService.deleteContact(Contact, req.params.contactID);
+    res.json({
       contact,
-      message: contact ? 'Successfully deleted contact' : `No contact with ID: ${req.params.contactID}` });
-  });
+      message: contact ? 'Successfully deleted contact' : `No contact with ID: ${req.params.contactID}`
+    });
+  } catch(err) {
+    res.send(err);
+  }
 };

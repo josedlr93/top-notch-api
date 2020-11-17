@@ -51,7 +51,7 @@ describe('Routes test', () => {
   }
   
   describe('POST /contact', () => {
-    it('can post a contact', async () => {
+    it('adds a contact', async () => {
       await request(server)
         .post('/contact')
         .send(contactInfo)
@@ -61,6 +61,42 @@ describe('Routes test', () => {
           expect(res.body.last_name).toBe(contactInfo.last_name);
           expect(res.body.email).toBe(contactInfo.email);
         });
+    });
+
+    it('returns duplicate key error, responds with status 400', async () => {
+      const contact = await new Contact(contactInfo).save();
+      
+      await request(server)
+        .post('/contact')
+        .send(contactInfo)
+        .expect(400)
+        .then((res) => {
+          expect(res.body.duplicate.email).toBe(contactInfo.email);
+        });
+    });
+
+    it('throws error for missing last name, responds with status 400', async () => {
+      await request(server)
+        .post('/contact')
+        .send({
+          first_name: contactInfo.first_name
+        })
+        .expect(400)
+        .then((res) => {
+          expect(res.body.message).toBe('first and last name required')
+        })
+    });
+    
+    it('throws error for missing first name, responds with status 400', async () => {
+      await request(server)
+        .post('/contact')
+        .send({
+          last_name: contactInfo.last_name
+        })
+        .expect(400)
+        .then((res) => {
+          expect(res.body.message).toBe('first and last name required')
+        })
     });
   });
 

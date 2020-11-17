@@ -3,6 +3,11 @@ export const getContacts = (Contact) => {
 };
 
 export const addNewContact = (Contact, data) => {
+  if (!data.last_name || !data.first_name){
+    let error = new Error('first and last name required');
+    error.status = 400;
+    throw error;
+  }
   let newContact = new Contact(data);
   return newContact.save();
 };

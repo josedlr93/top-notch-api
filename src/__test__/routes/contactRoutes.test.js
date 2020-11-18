@@ -1,15 +1,10 @@
-import mongoose from 'mongoose';
 import request from 'supertest';
 
+import mongoose, { connect, disconnect } from '../../lib/database.js';
 import app from '../../app.js';
-import DB_URI from '../../../config/databaseConfig.js';
 import { ContactSchema } from '../../models/contactModel.js';
 
 const Contact = mongoose.model('Contact', ContactSchema);
-
-// mongoose connection
-mongoose.Promise = global.Promise;
-mongoose.connection.on('open', () => console.log('DB - connected'));
 
 describe('Routes test', () => {
   it('has a module', () => {
@@ -19,12 +14,7 @@ describe('Routes test', () => {
   let server;
 
   beforeAll(async ()=> {
-    await mongoose.connect(DB_URI, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true
-    })
-      .catch(console.error);
+    await connect();
     server = app.listen(3001);
   });
 
@@ -32,8 +22,8 @@ describe('Routes test', () => {
     await Contact.deleteMany({});
   });
 
-  afterAll(done => {
-    mongoose.connection.close();
+  afterAll(async done => {
+    await disconnect();
     server.close(done);
   });
 

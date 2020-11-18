@@ -6,7 +6,7 @@ import truckRoutes from './routes/truckRoutes.js';
 import employeeRoutes from './routes/employeeRoutes.js';
 import jobRoutes from './routes/jobRoutes.js';
 
-import { handleDuplicateKey } from './errorHandler.js';
+import { handleDuplicateKey } from './lib/errorHandler.js';
 
 const app = express();
 

@@ -44,13 +44,13 @@ describe('contactServices test #cold-test', () => {
     it('throws an error on missing last name', () => {
       expect(() => {
         contactService.addNewContact({}, {first_name: 'John'});
-      }).toThrow('first and last name required')
+      }).toThrowError('first and last name required')
     });
     
     it('throws an error on missing first name', () => {
       expect(() => {
         contactService.addNewContact({}, {last_name: 'Doe'});
-      }).toThrow('first and last name required')
+      }).toThrowError('first and last name required')
     });
   });
 

@@ -86,5 +86,5 @@ describe('Contact model test', () => {
 
       expect(deletedContact._id).toEqual(savedContact._id);
     });
-  })
+  });
 });

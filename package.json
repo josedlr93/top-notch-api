@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon ./server.js",
-    "test": "jest --coverage"
+    "test": "jest --coverage --verbose --silent"
   },
   "author": "Jose De La Rosa",
   "license": "ISC",
@@ -25,7 +25,8 @@
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.1.0",
     "jest": "^26.6.3",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "supertest": "^6.0.1"
   },
   "type": "module",
   "jest": {

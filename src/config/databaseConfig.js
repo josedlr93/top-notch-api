@@ -1,7 +1,5 @@
 import dotenv from 'dotenv';
 
-console.log(process.env.NODE_ENV);
-
 if (process.env.NODE_ENV === 'development') {
   const result = dotenv.config();
   
@@ -23,6 +21,7 @@ switch(process.env.NODE_ENV) {
     break;
   default:
     DB_URI = `mongodb://localhost:27017/test`;
+    console.log('using:', DB_URI);
 }
 
 console.log(`Using DB_URI from environment: ${process.env.NODE_ENV}`);

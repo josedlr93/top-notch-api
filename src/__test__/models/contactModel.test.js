@@ -7,13 +7,6 @@ const Contact = mongoose.model('Contact', ContactSchema);
 
 // mongoose connection
 mongoose.Promise = global.Promise;
-mongoose.connect(DB_URI, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true
-})
-  .catch(console.error);
-
 mongoose.connection.on('open', () => console.log('DB - connected'));
 
 describe('Contact model test', () => {  
@@ -27,6 +20,12 @@ describe('Contact model test', () => {
   }
 
   beforeAll(async () => {
+    await mongoose.connect(DB_URI, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true
+    })
+      .catch(console.error);
     await Contact.deleteMany({})
   });
 
@@ -87,4 +86,16 @@ describe('Contact model test', () => {
       expect(foundContact).toBeDefined();
     });
   });
+
+  describe('delete contact', () => {
+    it('deletes a contact by id', async () => {
+      const contact = new Contact(contactInfo);
+
+      const savedContact = await contact.save();
+
+      const deletedContact = await Contact.findByIdAndDelete({ _id: savedContact._id });
+
+      expect(deletedContact._id).toEqual(savedContact._id);
+    });
+  })
 });

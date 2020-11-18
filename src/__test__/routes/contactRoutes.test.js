@@ -9,13 +9,6 @@ const Contact = mongoose.model('Contact', ContactSchema);
 
 // mongoose connection
 mongoose.Promise = global.Promise;
-mongoose.connect(DB_URI, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true
-})
-  .catch(console.error);
-
 mongoose.connection.on('open', () => console.log('DB - connected'));
 
 describe('Routes test', () => {
@@ -25,7 +18,13 @@ describe('Routes test', () => {
 
   let server;
 
-  beforeAll(()=> {
+  beforeAll(async ()=> {
+    await mongoose.connect(DB_URI, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true
+    })
+      .catch(console.error);
     server = app.listen(3001);
   });
 
@@ -39,7 +38,7 @@ describe('Routes test', () => {
   });
 
   describe('GET /contact', () => {
-    it('can get contacts', async () => {
+    it('can get contacts, responds with status 200', async () => {
       await request(server).get('/contact').expect(200);
     });
   });
@@ -51,7 +50,7 @@ describe('Routes test', () => {
   }
   
   describe('POST /contact', () => {
-    it('adds a contact', async () => {
+    it('adds a contact, responds with status 200', async () => {
       await request(server)
         .post('/contact')
         .send(contactInfo)
@@ -75,7 +74,7 @@ describe('Routes test', () => {
         });
     });
 
-    it('throws error for missing last name, responds with status 400', async () => {
+    it('missing last name, responds with status 400', async () => {
       await request(server)
         .post('/contact')
         .send({
@@ -87,7 +86,7 @@ describe('Routes test', () => {
         })
     });
     
-    it('throws error for missing first name, responds with status 400', async () => {
+    it('missing first name, responds with status 400', async () => {
       await request(server)
         .post('/contact')
         .send({
@@ -101,7 +100,7 @@ describe('Routes test', () => {
   });
 
   describe('GET /contact/:contactID', () => {
-    it('gets a contact with id', async () => {
+    it('gets a contact with id, responds with status 200', async () => {
       const contact = await new Contact(contactInfo).save();
       
       await request(server)

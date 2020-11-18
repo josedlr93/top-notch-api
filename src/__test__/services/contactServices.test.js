@@ -1,6 +1,6 @@
 import * as contactService from '../../services/contactService';
 
-describe('contactServices test', () => {
+describe('contactServices test #cold-test', () => {
   it('has a module', () => {
     expect(contactService).toBeDefined();
   });
@@ -39,6 +39,18 @@ describe('contactServices test', () => {
       expect(save).toHaveBeenCalledTimes(1);
       expect(first_name).toEqual('John');
       expect(last_name).toEqual('Doe');
+    });
+
+    it('throws an error on missing last name', () => {
+      expect(() => {
+        contactService.addNewContact({}, {first_name: 'John'});
+      }).toThrow('first and last name required')
+    });
+    
+    it('throws an error on missing first name', () => {
+      expect(() => {
+        contactService.addNewContact({}, {last_name: 'Doe'});
+      }).toThrow('first and last name required')
     });
   });
 

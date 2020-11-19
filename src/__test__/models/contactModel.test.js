@@ -27,6 +27,7 @@ describe('Contact model test', () => {
   });
 
   afterAll(async () => {
+    await Contact.deleteMany({});
     await disconnect();
     console.log('DB - connection closed');
   });

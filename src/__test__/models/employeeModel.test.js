@@ -22,8 +22,8 @@ describe('Employee model test', () => {
       alt_phone: null,
       admin: true,
       has_cdl: true
-    }
-  })
+    };
+  });
 
   afterEach(async () => {
     await Employee.deleteMany({});

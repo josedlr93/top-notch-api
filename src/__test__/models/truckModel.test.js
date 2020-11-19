@@ -5,24 +5,29 @@ import { TruckSchema } from '../../models/truckModel.js';
 const Truck = mongoose.model('Truck', TruckSchema);
 
 describe('Truck model test', () => {
-  const truckInfo = {
-    truck_num: 1,
-    vin: '12345678912345678',
-    plate_num: '085cd2',
-    cdl_required: true,
-    service_date: new Date()
-  }
+  let truckInfo;
 
   beforeAll(async () => {
     await connect();
     await Truck.deleteMany({})
   });
 
+  beforeEach(() => {
+    truckInfo = {
+      truck_num: 1,
+      vin: '12345678912345678',
+      plate_num: '085cd2',
+      cdl_required: true,
+      service_date: new Date()
+    }
+  })
+
   afterEach(async () => {
     await Truck.deleteMany({});
   });
 
   afterAll(async () => {
+    await Truck.deleteMany({});
     await disconnect();
     console.log('DB - connection closed');
   });
@@ -43,6 +48,54 @@ describe('Truck model test', () => {
       expect(truck.plate_num).toEqual(foundTruck.plate_num);
       expect(truck.cdl_required).toBe(foundTruck.cdl_required);
       expect(truck.service_date).toEqual(foundTruck.service_date);
+    });
+
+    it('does not save a truck, missing key: truck_num', async () => {
+      truckInfo.truck_num = undefined;
+      const truck = new Truck(truckInfo);
+
+      await truck.save((err) => {
+        expect(err).toBeDefined();
+        expect(err._message).toBe('Truck validation failed');
+        expect(err.errors.truck_num).toBeDefined();
+        expect(err.errors.truck_num.properties.message).toBe('Enter truck number');
+      });
+    });
+
+    it('does not save a truck, missing key: vin', async () => {
+      truckInfo.vin = undefined;
+      const truck = new Truck(truckInfo);
+
+      await truck.save((err) => {
+        expect(err).toBeDefined();
+        expect(err._message).toBe('Truck validation failed');
+        expect(err.errors.vin).toBeDefined();
+        expect(err.errors.vin.properties.message).toBe('Enter VIN');
+      });
+    });
+
+    it('does not save a truck, missing key: plate_num', async () => {
+      truckInfo.plate_num = undefined;
+      const truck = new Truck(truckInfo);
+
+      await truck.save((err) => {
+        expect(err).toBeDefined();
+        expect(err._message).toBe('Truck validation failed');
+        expect(err.errors.plate_num).toBeDefined();
+        expect(err.errors.plate_num.properties.message).toBe('Enter plate number');
+      });
+    });
+
+    it('does not save a truck, missing key: cdl_required', async () => {
+      truckInfo.cdl_required = undefined;
+      const truck = new Truck(truckInfo);
+
+      await truck.save((err) => {
+        expect(err).toBeDefined();
+        expect(err._message).toBe('Truck validation failed');
+        expect(err.errors.cdl_required).toBeDefined();
+        expect(err.errors.cdl_required.properties.message).toBe('Indicate if CDL required');
+      });
     });
   });
 

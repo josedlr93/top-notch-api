@@ -42,12 +42,12 @@ describe('Contact model test', () => {
       const savedContact = await contact.save();
       const foundContact = await Contact.findById(savedContact._id);
       
-      expect(contact.first_name).toEqual(foundContact.first_name);
-      expect(contact.last_name).toEqual(foundContact.last_name);
-      expect(contact.email).toEqual(foundContact.email);
-      expect(contact.address).toEqual(foundContact.address);
-      expect(contact.phone).toEqual(foundContact.phone);
-      expect(contact.alt_phone).toEqual(foundContact.alt_phone);
+      expect(contact.first_name).toBe(foundContact.first_name);
+      expect(contact.last_name).toBe(foundContact.last_name);
+      expect(contact.email).toBe(foundContact.email);
+      expect(contact.address).toBe(foundContact.address);
+      expect(contact.phone).toBe(foundContact.phone);
+      expect(contact.alt_phone).toBe(foundContact.alt_phone);
     });
     
     it('does not save a contact, missing key: first_name', async () => {
@@ -88,7 +88,7 @@ describe('Contact model test', () => {
       
       const updatedContact = await contact.save();
 
-      expect(updatedContact.first_name).toEqual(contact.first_name)
+      expect(updatedContact.first_name).toBe(contact.first_name)
       
     });
   });

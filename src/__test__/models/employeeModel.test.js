@@ -5,21 +5,25 @@ import { EmployeeSchema } from '../../models/employeeModel.js';
 const Employee = mongoose.model('Employee', EmployeeSchema);
 
 describe('Employee model test', () => {
-  const employeeInfo = {
-    first_name: 'John',
-    last_name: 'Doe',
-    email: 'john.doe@email.com',
-    address: '1 address st, city state, 11111',
-    phone: 1111111111,
-    alt_phone: null,
-    admin: true,
-    has_cdl: true
-  }
+  let employeeInfo;
 
   beforeAll(async () => {
     await connect();
     await Employee.deleteMany({})
   });
+
+  beforeEach(() => {
+    employeeInfo = {
+      first_name: 'John',
+      last_name: 'Doe',
+      email: 'john.doe@email.com',
+      address: '1 address st, city state, 11111',
+      phone: 1111111111,
+      alt_phone: null,
+      admin: true,
+      has_cdl: true
+    }
+  })
 
   afterEach(async () => {
     await Employee.deleteMany({});
@@ -41,15 +45,38 @@ describe('Employee model test', () => {
       const savedEmployee = await employee.save();
       const foundEmployee = await Employee.findById(savedEmployee._id);
 
-      expect(employee.first_name).toEqual(foundEmployee.first_name);
-      expect(employee.last_name).toEqual(foundEmployee.last_name);
-      expect(employee.email).toEqual(foundEmployee.email);
-      expect(employee.address).toEqual(foundEmployee.address);
-      expect(employee.phone).toEqual(foundEmployee.phone);
-      expect(employee.alt_phone).toEqual(foundEmployee.alt_phone);
+      expect(employee.first_name).toBe(foundEmployee.first_name);
+      expect(employee.last_name).toBe(foundEmployee.last_name);
+      expect(employee.email).toBe(foundEmployee.email);
+      expect(employee.address).toBe(foundEmployee.address);
+      expect(employee.phone).toBe(foundEmployee.phone);
+      expect(employee.alt_phone).toBe(foundEmployee.alt_phone);
       expect(employee.admin).toBe(foundEmployee.admin);
       expect(employee.has_cdl).toBe(foundEmployee.has_cdl);
-      
+    });
+
+    it('does not save a employee, missing key: first_name', async () => {
+      employeeInfo.first_name = undefined;
+      const employee = new Employee(employeeInfo);
+
+      await employee.save((err) => {
+        expect(err).toBeDefined();
+        expect(err._message).toBe('Employee validation failed');
+        expect(err.errors.first_name).toBeDefined();
+        expect(err.errors.first_name.properties.message).toBe('Enter a first name');
+      });
+    });
+
+    it('does not save a employee, missing key: last_name', async () => {
+      employeeInfo.last_name = undefined;
+      const employee = new Employee(employeeInfo);
+
+      await employee.save((err) => {
+        expect(err).toBeDefined();
+        expect(err._message).toBe('Employee validation failed');
+        expect(err.errors.last_name).toBeDefined();
+        expect(err.errors.last_name.properties.message).toBe('Enter a last name');
+      });
     });
   });
 
@@ -60,13 +87,13 @@ describe('Employee model test', () => {
       const savedEmployee = await employee.save();
       const foundEmployee = await Employee.findById(savedEmployee._id);
 
-      expect(employee.first_name).toEqual(foundEmployee.first_name);
+      expect(employee.first_name).toBe(foundEmployee.first_name);
 
       employee.first_name = 'Jane';
 
       const updatedEmployee = await employee.save();
 
-      expect(updatedEmployee.first_name).toEqual(employee.first_name)
+      expect(updatedEmployee.first_name).toBe(employee.first_name)
 
     });
   });

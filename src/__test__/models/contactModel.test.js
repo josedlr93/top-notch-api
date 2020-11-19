@@ -4,18 +4,22 @@ import { ContactSchema } from '../../models/contactModel.js';
 const Contact = mongoose.model('Contact', ContactSchema);
 
 describe('Contact model test', () => {  
-  const contactInfo = {
-    first_name: 'John',
-    last_name: 'Doe',
-    email: 'john.doe@email.com',
-    address: '1 address st, city state, 11111',
-    phone: 1111111111,
-    alt_phone: null
-  }
+  let contactInfo;
 
   beforeAll(async () => {
     await connect();
     await Contact.deleteMany({})
+  });
+
+  beforeEach(() => {
+    contactInfo = {
+      first_name: 'John',
+      last_name: 'Doe',
+      email: 'john.doe@email.com',
+      address: '1 address st, city state, 11111',
+      phone: 1111111111,
+      alt_phone: null
+    }
   });
 
   afterEach(async () => {
@@ -44,6 +48,30 @@ describe('Contact model test', () => {
       expect(contact.address).toEqual(foundContact.address);
       expect(contact.phone).toEqual(foundContact.phone);
       expect(contact.alt_phone).toEqual(foundContact.alt_phone);
+    });
+    
+    it('does not save a contact, missing key: first_name', async () => {
+      contactInfo.first_name = undefined;
+      const contact = new Contact(contactInfo);
+
+      await contact.save((err) => {
+        expect(err).toBeDefined();
+        expect(err._message).toBe('Contact validation failed');
+        expect(err.errors.first_name).toBeDefined();
+        expect(err.errors.first_name.properties.message).toBe('Enter a first name');
+      });   
+    });
+    
+    it('does not save a contact, missing key: last_name', async () => {
+      contactInfo.last_name = undefined;
+      const contact = new Contact(contactInfo);
+
+      await contact.save((err) => {
+        expect(err).toBeDefined();
+        expect(err._message).toBe('Contact validation failed');
+        expect(err.errors.last_name).toBeDefined();
+        expect(err.errors.last_name.properties.message).toBe('Enter a last name');
+      });   
     });
   });
 

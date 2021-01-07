@@ -15,7 +15,7 @@ describe('Routes test', () => {
 
   beforeAll(async ()=> {
     await connect();
-    server = app.listen(3001);
+    server = app.listen();
   });
 
   beforeEach(async () => {
@@ -24,7 +24,7 @@ describe('Routes test', () => {
 
   afterAll(async done => {
     await disconnect();
-    server.close(done);
+    await server.close(done);
   });
 
   describe('GET /contact', () => {

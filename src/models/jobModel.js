@@ -12,10 +12,12 @@ export const JobSchema = new Schema({
     required: 'Date required',
     expires: '90 days'
   },
-  assigned_trucks: {
-    type: [Object],
-  },
-  assigned_employees: {
-    type: [Object],
-  },
+  assigned_trucks: [{
+    truck_num: Number,
+    cdl_required: Boolean
+  }],
+  assigned_employees: [{
+    first_name: String,
+    last_name: String,
+  }],
 });

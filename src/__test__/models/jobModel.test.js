@@ -5,6 +5,7 @@ import { EmployeeSchema } from '../../models/employeeModel';
 
 describe('Job model test', () => {
   const db = new MemoryServer();
+  const validationFailureMsg = 'Job validation failed';
   let Job;
   let Truck;
   let Employee;
@@ -59,15 +60,15 @@ describe('Job model test', () => {
         has_cdl: true
       };
       const truck = (await (new Truck(truckInfo).save())).toJSON();
-      expect(truck).toBeDefined();
       const employee = (await (new Employee(employeeInfo).save())).toJSON();
+
+      expect(truck).toBeDefined();
       expect(employee).toBeDefined();
 
       jobInfo.assigned_trucks.push(truck);
       jobInfo.assigned_employees.push(employee);
 
       const job = new Job(jobInfo);
-
       const savedJob = await job.save();
       const foundJob = await Job.findById(savedJob._id);
 
@@ -77,8 +78,6 @@ describe('Job model test', () => {
         expect.arrayContaining([
           expect.objectContaining({
             truck_num: truck.truck_num,
-            vin: truck.vin,
-            plate_num: truck.plate_num,
             cdl_required: truck.cdl_required
           })
         ])
@@ -88,13 +87,9 @@ describe('Job model test', () => {
           expect.objectContaining({
             first_name: employee.first_name,
             last_name: employee.last_name,
-            email: employee.email,
           })
         ])
       );
-
-      await Truck.deleteOne({truck_num: truck.truck_num});
-      await Employee.deleteOne({email: employee.email});
     });
 
     it('does not save a job, missing key: name', async () => {
@@ -103,7 +98,7 @@ describe('Job model test', () => {
 
       await job.save((err) => {
         expect(err).toBeDefined();
-        expect(err._message).toBe('Job validation failed');
+        expect(err._message).toBe(validationFailureMsg);
         expect(err.errors.name).toBeDefined();
         expect(err.errors.name.properties.message).toBe('Name required');
       });
@@ -115,7 +110,7 @@ describe('Job model test', () => {
 
       await job.save((err) => {
         expect(err).toBeDefined();
-        expect(err._message).toBe('Job validation failed');
+        expect(err._message).toBe(validationFailureMsg);
         expect(err.errors.date).toBeDefined();
         expect(err.errors.date.properties.message).toBe('Date required');
       });
@@ -125,14 +120,12 @@ describe('Job model test', () => {
   describe('update job', () => {
     it('updates a job', async () => {
       const job = new Job(jobInfo);
-
       const savedJob = await job.save();
       const foundJob = await Job.findById(savedJob._id);
 
-      expect(job.name).toEqual(foundJob.name);
+      expect(foundJob.name).toEqual(job.name);
 
       job.name = 'Smith';
-
       const updatedJob = await job.save();
 
       expect(updatedJob.name).toBe(job.name)
@@ -143,7 +136,6 @@ describe('Job model test', () => {
   describe('get job', () => {
     it('gets a job', async () => {
       const job = new Job(jobInfo);
-
       const savedJob = await job.save();
       const foundJob = await Job.findById(savedJob._id);
 
@@ -154,9 +146,7 @@ describe('Job model test', () => {
   describe('delete job', () => {
     it('deletes a job by id', async () => {
       const job = new Job(jobInfo);
-
       const savedJob = await job.save();
-
       const deletedJob = await Job.findByIdAndDelete({ _id: savedJob._id });
 
       expect(deletedJob._id).toEqual(savedJob._id);

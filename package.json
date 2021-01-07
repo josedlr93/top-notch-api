@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon ./server.js",
-    "test": "jest --coverage --verbose --silent"
+    "test": "jest --coverage --verbose --silent",
+    "debug-test": "jest --verbose --watch"
   },
   "author": "Jose De La Rosa",
   "license": "ISC",

@@ -1,14 +1,15 @@
-import mongoose, { connect, disconnect } from '../../lib/database.js';
+import MemoryServer from '../MemoryServer.js';
 import { ContactSchema } from '../../models/contactModel.js';
 
-const Contact = mongoose.model('Contact', ContactSchema);
-
 describe('Contact model test', () => {  
+  const db = new MemoryServer();
+  const validationFailureMsg = 'Contact validation failed';
+  let Contact;
   let contactInfo;
 
   beforeAll(async () => {
-    await connect();
-    await Contact.deleteMany({})
+    await db.connect();
+    Contact = db.connection.model('Contact', ContactSchema);
   });
 
   beforeEach(() => {
@@ -23,13 +24,11 @@ describe('Contact model test', () => {
   });
 
   afterEach(async () => {
-    await Contact.deleteMany({});
+    await db.clearDatabase();
   });
 
   afterAll(async () => {
-    await Contact.deleteMany({});
-    await disconnect();
-    console.log('DB - connection closed');
+    await db.disconnect();
   });
 
   it('has a module', () => {

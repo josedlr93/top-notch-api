@@ -3,7 +3,7 @@ import { EmployeeSchema } from '../../models/employeeModel.js';
 
 describe('Employee model test', () => {
   const db = new MemoryServer();
-  const validationFailureMsg = 'Job validation failed';
+  const validationFailureMsg = 'Employee validation failed';
   let Employee;
   let employeeInfo;
 
@@ -44,14 +44,14 @@ describe('Employee model test', () => {
       const savedEmployee = await employee.save();
       const foundEmployee = await Employee.findById(savedEmployee._id);
 
-      expect(employee.first_name).toBe(foundEmployee.first_name);
-      expect(employee.last_name).toBe(foundEmployee.last_name);
-      expect(employee.email).toBe(foundEmployee.email);
-      expect(employee.address).toBe(foundEmployee.address);
-      expect(employee.phone).toBe(foundEmployee.phone);
-      expect(employee.alt_phone).toBe(foundEmployee.alt_phone);
-      expect(employee.admin).toBe(foundEmployee.admin);
-      expect(employee.has_cdl).toBe(foundEmployee.has_cdl);
+      expect(foundEmployee.first_name).toBe(employee.first_name);
+      expect(foundEmployee.last_name).toBe(employee.last_name);
+      expect(foundEmployee.email).toBe(employee.email);
+      expect(foundEmployee.address).toBe(employee.address);
+      expect(foundEmployee.phone).toBe(employee.phone);
+      expect(foundEmployee.alt_phone).toBe(employee.alt_phone);
+      expect(foundEmployee.admin).toBe(employee.admin);
+      expect(foundEmployee.has_cdl).toBe(employee.has_cdl);
     });
 
     it('does not save a employee, missing key: first_name', async () => {
@@ -60,7 +60,7 @@ describe('Employee model test', () => {
 
       await employee.save((err) => {
         expect(err).toBeDefined();
-        expect(err._message).toBe('Employee validation failed');
+        expect(err._message).toBe(validationFailureMsg);
         expect(err.errors.first_name).toBeDefined();
         expect(err.errors.first_name.properties.message).toBe('Enter a first name');
       });
@@ -72,7 +72,7 @@ describe('Employee model test', () => {
 
       await employee.save((err) => {
         expect(err).toBeDefined();
-        expect(err._message).toBe('Employee validation failed');
+        expect(err._message).toBe(validationFailureMsg);
         expect(err.errors.last_name).toBeDefined();
         expect(err.errors.last_name.properties.message).toBe('Enter a last name');
       });
@@ -82,14 +82,12 @@ describe('Employee model test', () => {
   describe('update employee', () => {
     it('updates a employee', async () => {
       const employee = new Employee(employeeInfo);
-
       const savedEmployee = await employee.save();
       const foundEmployee = await Employee.findById(savedEmployee._id);
 
-      expect(employee.first_name).toBe(foundEmployee.first_name);
+      expect(foundEmployee.first_name).toBe(employee.first_name);
 
       employee.first_name = 'Jane';
-
       const updatedEmployee = await employee.save();
 
       expect(updatedEmployee.first_name).toBe(employee.first_name)
@@ -100,7 +98,6 @@ describe('Employee model test', () => {
   describe('get employee', () => {
     it('gets a employee', async () => {
       const employee = new Employee(employeeInfo);
-
       const savedEmployee = await employee.save();
       const foundEmployee = await Employee.findById(savedEmployee._id);
 
@@ -111,9 +108,7 @@ describe('Employee model test', () => {
   describe('delete employee', () => {
     it('deletes a employee by id', async () => {
       const employee = new Employee(employeeInfo);
-
       const savedEmployee = await employee.save();
-
       const deletedEmployee = await Employee.findByIdAndDelete({ _id: savedEmployee._id });
 
       expect(deletedEmployee._id).toEqual(savedEmployee._id);

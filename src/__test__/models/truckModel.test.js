@@ -3,6 +3,7 @@ import { TruckSchema } from '../../models/truckModel.js';
 
 describe('Truck model test', () => {
   const db = new MemoryServer();
+  const validationFailureMsg = 'Truck validation failed';
   let Truck;
   let truckInfo;
 
@@ -39,11 +40,11 @@ describe('Truck model test', () => {
       const savedTruck = await truck.save();
       const foundTruck = await Truck.findById(savedTruck._id);
 
-      expect(truck.truck_num).toBe(foundTruck.truck_num);
-      expect(truck.vin).toEqual(foundTruck.vin);
-      expect(truck.plate_num).toEqual(foundTruck.plate_num);
-      expect(truck.cdl_required).toBe(foundTruck.cdl_required);
-      expect(truck.service_date).toEqual(foundTruck.service_date);
+      expect(foundTruck.truck_num).toBe(truck.truck_num);
+      expect(foundTruck.vin).toEqual(truck.vin);
+      expect(foundTruck.plate_num).toEqual(truck.plate_num);
+      expect(foundTruck.cdl_required).toBe(truck.cdl_required);
+      expect(foundTruck.service_date).toEqual(truck.service_date);
     });
 
     it('does not save a truck, missing key: truck_num', async () => {
@@ -52,7 +53,7 @@ describe('Truck model test', () => {
 
       await truck.save((err) => {
         expect(err).toBeDefined();
-        expect(err._message).toBe('Truck validation failed');
+        expect(err._message).toBe(validationFailureMsg);
         expect(err.errors.truck_num).toBeDefined();
         expect(err.errors.truck_num.properties.message).toBe('Enter truck number');
       });
@@ -64,7 +65,7 @@ describe('Truck model test', () => {
 
       await truck.save((err) => {
         expect(err).toBeDefined();
-        expect(err._message).toBe('Truck validation failed');
+        expect(err._message).toBe(validationFailureMsg);
         expect(err.errors.vin).toBeDefined();
         expect(err.errors.vin.properties.message).toBe('Enter VIN');
       });
@@ -76,7 +77,7 @@ describe('Truck model test', () => {
 
       await truck.save((err) => {
         expect(err).toBeDefined();
-        expect(err._message).toBe('Truck validation failed');
+        expect(err._message).toBe(validationFailureMsg);
         expect(err.errors.plate_num).toBeDefined();
         expect(err.errors.plate_num.properties.message).toBe('Enter plate number');
       });
@@ -88,7 +89,7 @@ describe('Truck model test', () => {
 
       await truck.save((err) => {
         expect(err).toBeDefined();
-        expect(err._message).toBe('Truck validation failed');
+        expect(err._message).toBe(validationFailureMsg);
         expect(err.errors.cdl_required).toBeDefined();
         expect(err.errors.cdl_required.properties.message).toBe('Indicate if CDL required');
       });
@@ -102,7 +103,7 @@ describe('Truck model test', () => {
       const savedTruck = await truck.save();
       const foundTruck = await Truck.findById(savedTruck._id);
 
-      expect(truck.vin).toEqual(foundTruck.vin);
+      expect(foundTruck.vin).toEqual(truck.vin);
 
       truck.vin = '12345678912345679';
 

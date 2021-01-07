@@ -1,19 +1,20 @@
-import mongoose, { connect, disconnect } from '../../lib/database.js';
-
+import MemoryServer from '../MemoryServer.js';
 import { JobSchema } from '../../models/jobModel.js';
 import { TruckSchema } from '../../models/truckModel';
 import { EmployeeSchema } from '../../models/employeeModel';
 
-const Job = mongoose.model('Job', JobSchema);
-const Truck = mongoose.model('Truck', TruckSchema);
-const Employee = mongoose.model('Employee', EmployeeSchema);
-
 describe('Job model test', () => {
+  const db = new MemoryServer();
+  let Job;
+  let Truck;
+  let Employee;
   let jobInfo;
 
   beforeAll(async () => {
-    await connect();
-    await Job.deleteMany({});
+    await db.connect();
+    Job = db.connection.model('Job', JobSchema);
+    Truck = db.connection.model('Truck', TruckSchema);
+    Employee = db.connection.model('Employee', EmployeeSchema);
   });
 
   beforeEach(() => {
@@ -26,13 +27,11 @@ describe('Job model test', () => {
   });
 
   afterEach(async () => {
-    await Job.deleteMany({});
+    await db.clearDatabase();
   });
 
   afterAll(async () => {
-    await Job.deleteMany({});
-    await disconnect();
-    console.log('DB - connection closed');
+    await db.disconnect();
   });
 
   it('has a module', () => {

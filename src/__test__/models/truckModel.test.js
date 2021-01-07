@@ -1,15 +1,14 @@
-import mongoose, { connect, disconnect } from '../../lib/database.js';
-
+import MemoryServer from '../MemoryServer.js';
 import { TruckSchema } from '../../models/truckModel.js';
 
-const Truck = mongoose.model('Truck', TruckSchema);
-
 describe('Truck model test', () => {
+  const db = new MemoryServer();
+  let Truck;
   let truckInfo;
 
   beforeAll(async () => {
-    await connect();
-    await Truck.deleteMany({})
+    await db.connect();
+    Truck = db.connection.model('Truck', TruckSchema);
   });
 
   beforeEach(() => {
@@ -23,19 +22,16 @@ describe('Truck model test', () => {
   })
 
   afterEach(async () => {
-    await Truck.deleteMany({});
+    await db.clearDatabase();
   });
 
   afterAll(async () => {
-    await Truck.deleteMany({});
-    await disconnect();
-    console.log('DB - connection closed');
+    await db.disconnect();
   });
 
   it('has a module', () => {
     expect(Truck).toBeDefined();
   });
-
   describe('save truck', () => {
     it('saves a truck', async () => {
       const truck = new Truck(truckInfo);

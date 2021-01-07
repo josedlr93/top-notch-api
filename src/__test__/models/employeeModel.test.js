@@ -1,15 +1,15 @@
-import mongoose, { connect, disconnect } from '../../lib/database.js';
-
+import MemoryServer from '../MemoryServer.js';
 import { EmployeeSchema } from '../../models/employeeModel.js';
 
-const Employee = mongoose.model('Employee', EmployeeSchema);
-
 describe('Employee model test', () => {
+  const db = new MemoryServer();
+  const validationFailureMsg = 'Job validation failed';
+  let Employee;
   let employeeInfo;
 
   beforeAll(async () => {
-    await connect();
-    await Employee.deleteMany({})
+    await db.connect();
+    Employee = db.connection.model('Employee', EmployeeSchema);
   });
 
   beforeEach(() => {
@@ -26,12 +26,11 @@ describe('Employee model test', () => {
   });
 
   afterEach(async () => {
-    await Employee.deleteMany({});
+    await db.clearDatabase();
   });
 
   afterAll(async () => {
-    await disconnect();
-    console.log('DB - connection closed');
+    await db.disconnect();
   });
 
   it('has a module', () => {

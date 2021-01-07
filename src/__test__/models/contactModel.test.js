@@ -38,16 +38,15 @@ describe('Contact model test', () => {
   describe('save contact', () => {
     it('saves a contact', async () => {
       const contact = new Contact(contactInfo);
-      
       const savedContact = await contact.save();
       const foundContact = await Contact.findById(savedContact._id);
       
-      expect(contact.first_name).toBe(foundContact.first_name);
-      expect(contact.last_name).toBe(foundContact.last_name);
-      expect(contact.email).toBe(foundContact.email);
-      expect(contact.address).toBe(foundContact.address);
-      expect(contact.phone).toBe(foundContact.phone);
-      expect(contact.alt_phone).toBe(foundContact.alt_phone);
+      expect(foundContact.first_name).toBe(contact.first_name);
+      expect(foundContact.last_name).toBe(contact.last_name);
+      expect(foundContact.email).toBe(contact.email);
+      expect(foundContact.address).toBe(contact.address);
+      expect(foundContact.phone).toBe(contact.phone);
+      expect(foundContact.alt_phone).toBe(contact.alt_phone);
     });
     
     it('does not save a contact, missing key: first_name', async () => {
@@ -56,7 +55,7 @@ describe('Contact model test', () => {
 
       await contact.save((err) => {
         expect(err).toBeDefined();
-        expect(err._message).toBe('Contact validation failed');
+        expect(err._message).toBe(validationFailureMsg);
         expect(err.errors.first_name).toBeDefined();
         expect(err.errors.first_name.properties.message).toBe('Enter a first name');
       });   
@@ -68,7 +67,7 @@ describe('Contact model test', () => {
 
       await contact.save((err) => {
         expect(err).toBeDefined();
-        expect(err._message).toBe('Contact validation failed');
+        expect(err._message).toBe(validationFailureMsg);
         expect(err.errors.last_name).toBeDefined();
         expect(err.errors.last_name.properties.message).toBe('Enter a last name');
       });   
@@ -78,14 +77,12 @@ describe('Contact model test', () => {
   describe('update contact', () => {
     it('updates a contact', async () => {
       const contact = new Contact(contactInfo);
-
       const savedContact = await contact.save();
       const foundContact = await Contact.findById(savedContact._id);
 
-      expect(contact.first_name).toEqual(foundContact.first_name);
+      expect(foundContact.first_name).toEqual(contact.first_name);
 
       contact.first_name = 'Jane';
-      
       const updatedContact = await contact.save();
 
       expect(updatedContact.first_name).toBe(contact.first_name)
@@ -96,7 +93,6 @@ describe('Contact model test', () => {
   describe('get contact', () => {
     it('gets a contact', async () => {
       const contact = new Contact(contactInfo);
-
       const savedContact = await contact.save();
       const foundContact = await Contact.findById(savedContact._id);
 
@@ -107,9 +103,7 @@ describe('Contact model test', () => {
   describe('delete contact', () => {
     it('deletes a contact by id', async () => {
       const contact = new Contact(contactInfo);
-
       const savedContact = await contact.save();
-
       const deletedContact = await Contact.findByIdAndDelete({ _id: savedContact._id });
 
       expect(deletedContact._id).toEqual(savedContact._id);

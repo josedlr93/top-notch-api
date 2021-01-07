@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { TruckSchema } from '../models/truckModel.js';
-import { handleDuplicateKey } from '../errorHandler.js';
+import { handleDuplicateKey } from '../lib/errorHandler.js';
 
 const Truck = mongoose.model('Truck', TruckSchema);
 

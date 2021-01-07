@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 import { JobSchema } from '../models/jobModel.js';
 
-import { handleDuplicateKey } from '../errorHandler.js';
+import { handleDuplicateKey } from '../lib/errorHandler.js';
 
 const Job = mongoose.model('Job', JobSchema);
 
